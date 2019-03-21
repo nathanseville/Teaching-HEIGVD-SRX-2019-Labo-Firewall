@@ -113,7 +113,6 @@ Pour établir la table de filtrage, voici les **conditions à respecter** dans l
   <li>En suivant la méthodologie vue en classe, établir la table de filtrage avec précision en spécifiant la source et la destination, le type de trafic (TCP/UDP/ICMP/any), les ports sources et destinations ainsi que l'action désirée (**Accept** ou **Drop**, éventuellement **Reject**).
   </li>                                  
 </ol>
-
 _Pour l'autorisation d'accès (**Accept**), il s'agit d'être le plus précis possible lors de la définition de la source et la destination : si l'accès ne concerne qu'une seule machine (ou un groupe), il faut préciser son adresse IP ou son nom (si vous ne pouvez pas encore la déterminer), et non la zone. 
 Appliquer le principe inverse (être le plus large possible) lorsqu'il faut refuser (**Drop**) une connexion._
 
@@ -123,15 +122,27 @@ _Lors de la définition d'une zone, spécifier l'adresse du sous-réseau IP avec
 
 **LIVRABLE : Remplir le tableau**
 
-| Adresse IP source | Adresse IP destination | Type | Port src | Port dst | Action |
-| :---:             | :---:                  | :---:| :------: | :------: | :----: |
-|                   |                        |      |          |          |        |
-|                   |                        |      |          |          |        |
-|                   |                        |      |          |          |        |
-|                   |                        |      |          |          |        |
-|                   |                        |      |          |          |        |
-|                   |                        |      |          |          |        |
-|                   |                        |      |          |          |        |
+| Adresse IP source | Adresse IP destination |     Type     | Port src | Port dst | Action |
+| :---------------: | :--------------------: | :----------: | :------: | :------: | :----: |
+|        ANY        |          ANY           |     ANY      |   ANY    |   ANY    |  Drop  |
+|        WAN        |    192.168.100.0/24    |   TCP/UDP    |    53    |   ANY    | Accept |
+| 192.168.100.0/24  |          WAN           |   TCP/UDP    |   ANY    |    53    | Accept |
+| 192.168.100.0/24  |          WAN           | ICMP Request |    -     |    -     | Accept |
+|        WAN        |    192.168.100.0/24    |  ICMP Reply  |    -     |    -     | Accept |
+| 192.168.100.0/24  |    192.168.200.0/24    |     ICMP     |    -     |    -     | Accept |
+| 192.168.200.0/24  |    192.168.100.0/24    |     ICMP     |    -     |    -     | Accept |
+| 192.168.200.0/24  |          WAN           |     TCP      |   ANY    | 80/8080  | Accept |
+|        WAN        |    192.168.100.0/24    |     TCP      | 80/8080  |   ANY    | Accept |
+| 192.168.200.0/24  |          WAN           |     TCP      |   ANY    |   443    | Accept |
+|        WAN        |    192.168.100.0/24    |     TCP      |   443    |   ANY    | Accept |
+| 192.168.100.0/24  |    192.168.200.3/24    |     TCP      |   ANY    |    80    | Accept |
+| 192.168.200.3/24  |    192.168.100.0/24    |     TCP      |    80    |   ANY    | Accept |
+|        WAN        |    192.168.200.3/24    |     TCP      |   ANY    |    80    | Accept |
+| 192.168.200.3/24  |          WAN           |     TCP      |    80    |   ANY    | Accept |
+| 192.168.100.3/24  |    192.168.200.3/24    |     TCP      |   ANY    |    22    | Accept |
+| 192.168.200.3/24  |    192.168.100.3/24    |     TCP      |    22    |   ANY    | Accept |
+| 192.168.100.3/24  |    192.168.100.2/24    |     TCP      |   ANY    |    22    | Accept |
+| 192.168.100.2/24  |    192.168.100.3/24    |     TCP      |    22    |   ANY    | Accept |
 
 ---
 
@@ -365,7 +376,7 @@ LIVRABLE : Commandes iptables
 
 ```bash
 ping 8.8.8.8
-``` 	            
+```
 Faire une capture du ping.
 
 ---
@@ -430,7 +441,6 @@ LIVRABLE : Commandes iptables
   <li>Tester en réitérant la commande ping sur le serveur de test (Google ou autre) : 
   </li>                                  
 </ol>
-
 ---
 
 **LIVRABLE : capture d'écran de votre ping.**
@@ -441,7 +451,6 @@ LIVRABLE : Commandes iptables
   <li>Remarques (sur le message du premier ping)? 
   </li>                                  
 </ol>
-
 ---
 **Réponse**
 
@@ -485,7 +494,6 @@ LIVRABLE : Commandes iptables
   <li>Tester l’accès à ce serveur depuis le LAN utilisant utilisant wget (ne pas oublier les captures d'écran). 
   </li>                                  
 </ol>
-
 ---
 
 **LIVRABLE : capture d'écran.**
@@ -526,7 +534,6 @@ ssh root@192.168.200.3 (password : celui que vous avez configuré)
   <li>Expliquer l'utilité de **ssh** sur un serveur. 
   </li>                                  
 </ol>
-
 ---
 **Réponse**
 
@@ -555,7 +562,6 @@ A présent, vous devriez avoir le matériel nécessaire afin de reproduire la ta
   <li>Insérer la capture d’écran avec toutes vos règles iptables
   </li>                                  
 </ol>
-
 ---
 
 **LIVRABLE : capture d'écran avec toutes vos règles.**
