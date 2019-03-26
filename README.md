@@ -391,6 +391,8 @@ Faire une capture du ping.
 ---
 **LIVRABLE : capture d'écran de votre ping vers l'Internet.**
 
+![Ping working WAN](figures/PingWWAN.png)
+
 ---
 
 <ol type="a" start="3">
