@@ -440,6 +440,8 @@ ping www.google.com
 
 **LIVRABLE : capture d'écran de votre ping.**
 
+![Ping not working no DNS](figures/PingNWDNS.png)
+
 ---
 
 * Créer et appliquer la règle adéquate pour que la **condition 1 du cahier des charges** soit respectée.
@@ -450,6 +452,8 @@ Commandes iptables :
 
 ```bash
 LIVRABLE : Commandes iptables
+iptables -A FORWARD -s 192.168.100.0/24 -o eth0 -p tcp --dport 53 -j ACCEPT
+iptables -A FORWARD -s 192.168.100.0/24 -o eth0 -p udp --dport 53 -j ACCEPT
 ```
 
 ---
@@ -462,6 +466,8 @@ LIVRABLE : Commandes iptables
 
 **LIVRABLE : capture d'écran de votre ping.**
 
+![Ping working DNS](figures/PingWDNS.png)
+
 ---
 
 <ol type="a" start="6">
@@ -471,7 +477,7 @@ LIVRABLE : Commandes iptables
 ---
 **Réponse**
 
-**LIVRABLE : Votre réponse ici...**
+"Temporary failure in name resolution" -> le serveur de résolution de nom DNS ne peut pas être atteint car bloqué par le firewall.
 
 ---
 
@@ -492,6 +498,9 @@ Commandes iptables :
 
 ```bash
 LIVRABLE : Commandes iptables
+iptables -A FORWARD -s 192.168.100.0/24 -o eth0 -p tcp --dport 80 -j ACCEPT
+iptables -A FORWARD -s 192.168.100.0/24 -o eth0 -p tcp --dport 8080 -j ACCEPT
+iptables -A FORWARD -s 192.168.100.0/24 -o eth0 -p tcp --dport 443 -j ACCEPT
 ```
 
 ---
@@ -504,6 +513,8 @@ Commandes iptables :
 
 ```bash
 LIVRABLE : Commandes iptables
+iptables -A FORWARD -s 192.168.100.0/24 -d 192.168.200.3 -p tcp --dport 80 -j ACCEPT
+iptables -A FORWARD -i eth0 -d 192.168.200.3 -p tcp --dport 80 -j ACCEPT
 ```
 ---
 
@@ -514,6 +525,8 @@ LIVRABLE : Commandes iptables
 ---
 
 **LIVRABLE : capture d'écran.**
+
+![Wget working](figures/WgetW.png)
 
 ---
 
@@ -531,6 +544,9 @@ Commandes iptables :
 
 ```bash
 LIVRABLE : Commandes iptables
+iptables -A FORWARD -s 192.168.100.3 -d 192.168.200.3 -p tcp --dport 22 -j ACCEPT
+iptables -A INPUT -s 192.168.100.3 -d 192.168.100.2 -p tcp --dport 22 -j ACCEPT
+iptables -A OUTPUT -s 192.168.100.2 -d 192.168.100.3 -p tcp --sport 22 -j ACCEPT
 ```
 
 ---
@@ -554,7 +570,7 @@ ssh root@192.168.200.3 (password : celui que vous avez configuré)
 ---
 **Réponse**
 
-**LIVRABLE : Votre réponse ici...**
+Cela permet de se connecter au serveur et de le configurer à distance ou malgrès le fait qu'il soit innaccessible physiquement ou sans matériel (écran, clavier).
 
 ---
 
@@ -562,8 +578,6 @@ ssh root@192.168.200.3 (password : celui que vous avez configuré)
   <li>En général, à quoi faut-il particulièrement faire attention lors de l'écriture des règles du pare-feu pour ce type de connexion ? 
   </li>                                  
 </ol>
-
-
 ---
 **Réponse**
 
