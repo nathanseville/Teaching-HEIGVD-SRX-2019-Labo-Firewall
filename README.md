@@ -369,6 +369,12 @@ Commandes iptables :
 ---
 
 ```bash
+# DROP all by default
+iptables -P FORWARD DROP
+iptables -P INPUT DROP
+iptables -P OUTPUT DROP
+
+# Icmp whitelist
 iptables -A FORWARD -s 192.168.100.0/24 -d 192.168.200.0/24 -p icmp -j ACCEPT
 iptables -A FORWARD -s 192.168.200.0/24 -d 192.168.100.0/24 -p icmp -j ACCEPT
 iptables -A FORWARD -s 192.168.100.0/24 -o eth0 -p icmp -m icmp --icmp-type 8 -j ACCEPT
@@ -401,20 +407,20 @@ Faire une capture du ping.
 </ol>
 
 
-| De Client\_in\_LAN à | OK/KO | Commentaires et explications |
-| :---                 | :---: | :---                         |
-| Interface DMZ du FW  |       |                              |
-| Interface LAN du FW  |       |                              |
-| Client LAN           |       |                              |
-| Serveur WAN          |       |                              |
+| De Client\_in\_LAN à | OK/KO | Commentaires et explications                                 |
+| :------------------- | :---: | :----------------------------------------------------------- |
+| Interface DMZ du FW  |  KO   | Car l'interface est inaccessible car interface de sortie sur la DMZ |
+| Interface LAN du FW  |  KO   | Car le firewall est configuré pour accepter uniquement les FORWARD et non pas les INPUT/OUTPUT |
+| Client LAN           |  OK   | Car c'est le même sous-réseau                                |
+| Serveur WAN          |  OK   | Car c'est authorisé dans les règle du firewall               |
 
 
-| De Server\_in\_DMZ à | OK/KO | Commentaires et explications |
-| :---                 | :---: | :---                         |
-| Interface DMZ du FW  |       |                              |
-| Interface LAN du FW  |       |                              |
-| Serveur DMZ          |       |                              |
-| Serveur WAN          |       |                              |
+| De Server\_in\_DMZ à | OK/KO | Commentaires et explications                                 |
+| :------------------- | :---: | :----------------------------------------------------------- |
+| Interface DMZ du FW  |  KO   | Car le firewall est configuré pour accepter uniquement les FORWARD et non pas les INPUT/OUTPUT |
+| Interface LAN du FW  |  KO   | Car l'interface est inaccessible car interface de sortie sur le LAN |
+| Serveur DMZ          |  OK   | Car c'est le même sous-réseau                                |
+| Serveur WAN          |  KO   | Car ce n'est pas authorisé par le firewall                   |
 
 
 ## Règles pour le protocole DNS
