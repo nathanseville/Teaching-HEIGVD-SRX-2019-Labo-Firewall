@@ -561,6 +561,8 @@ ssh root@192.168.200.3 (password : celui que vous avez configuré)
 
 **LIVRABLE : capture d'écran de votre connexion ssh.**
 
+![Ssh working](figures/SshW.png)
+
 ---
 
 <ol type="a" start="9">
@@ -581,7 +583,7 @@ Cela permet de se connecter au serveur et de le configurer à distance ou malgr�
 ---
 **Réponse**
 
-**LIVRABLE : Votre réponse ici...**
+Comme ssh permet de prendre le controle d'une machine, il ne faut surout pas laisser accès à quelqu'un de non authorisé. Les règles du pare-feu doivent être stricte et précise.
 
 ---
 
@@ -596,5 +598,7 @@ A présent, vous devriez avoir le matériel nécessaire afin de reproduire la ta
 ---
 
 **LIVRABLE : capture d'écran avec toutes vos règles.**
+
+![Iptables règles](figures/Iptables.png)
 
 ---
